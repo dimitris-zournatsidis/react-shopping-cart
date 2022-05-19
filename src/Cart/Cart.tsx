@@ -22,8 +22,8 @@ export default function Cart(props: CartProps) {
   return (
     <aside className='cart_container'>
       <div className='top_cart_section'>
-      <h2>Your Cart</h2>
-      <CloseIcon onClick={props.closeCart} className='close_cart_button'/>
+        <h2>Your Cart</h2>
+        <CloseIcon onClick={props.closeCart} className='close_cart_button' />
       </div>
 
       {props.cartItems.length > 1 && (

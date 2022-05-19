@@ -1,5 +1,5 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from 'react-query';
 import Item from './Item/Item';
 import Cart from './Cart/Cart';
@@ -29,7 +29,7 @@ const getProducts = async (): Promise<CartItemType[]> =>
 function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
-  const { data, isLoading, error } = useQuery<CartItemType[]>(
+  const { data, isLoading, isIdle, error } = useQuery<CartItemType[]>(
     'products',
     getProducts
   );
@@ -40,7 +40,7 @@ function App() {
 
   function handleAddToCart(clickedItem: CartItemType) {
     setCartItems((prev) => {
-      // is the item already added in the cart?
+      // check if item is already in cart
       const isItemInCart = prev.find((item) => item.id === clickedItem.id);
 
       if (isItemInCart) {
@@ -51,7 +51,7 @@ function App() {
         );
       }
 
-      // first time the item is added
+      // if item is added for the first time
       return [...prev, { ...clickedItem, amount: 1 }];
     });
   }
@@ -73,7 +73,7 @@ function App() {
     setCartItems([]);
   }
 
-  if (isLoading) return <LinearProgress />;
+  if (isLoading || isIdle) return <LinearProgress />;
   if (error) return <div>Something went wrong...</div>;
   return (
     <div className='app'>
