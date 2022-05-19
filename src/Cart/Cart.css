@@ -1,0 +1,38 @@
+.cart_container {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  width: 20rem;
+  padding: 20px;
+}
+
+.top_cart_section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.close_cart_button {
+  cursor: pointer;
+}
+
+.clear_cart_button {
+  border: 1px solid red;
+  color: red;
+  display: inline-block;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: all 200ms ease-in-out;
+}
+
+.clear_cart_button:hover {
+  background-color: red;
+  color: white;
+  transition: all 200ms ease-in-out;
+}
+
+@media only screen and (max-width: 600px) {
+  .cart_container {
+    width: 17rem;
+  }
+}
