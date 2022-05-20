@@ -1,5 +1,5 @@
 import './App.css';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useQuery } from 'react-query';
 import Item from './Item/Item';
 import Cart from './Cart/Cart';
@@ -23,16 +23,29 @@ export interface CartItemType {
   amount: number;
 }
 
-const getProducts = async (): Promise<CartItemType[]> =>
-  await (await fetch('https://fakestoreapi.com/products')).json();
+export default function App() {
+  const getProducts = async (): Promise<CartItemType[]> =>
+    await (await fetch('https://fakestoreapi.com/products')).json();
 
-function App() {
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [cartItems, setCartItems] = useState([] as CartItemType[]);
   const { data, isLoading, isIdle, error } = useQuery<CartItemType[]>(
     'products',
     getProducts
   );
+
+  // get cart items from localStorage
+  useEffect(() => {
+    const temp = localStorage.getItem('cart');
+    const localCartItems = JSON.parse(temp || '');
+    if (localCartItems.length > 0) setCartItems(localCartItems);
+  }, []);
+
+  // save cart items to localStorage
+  useEffect(() => {
+    const temp = JSON.stringify(cartItems);
+    localStorage.setItem('cart', temp);
+  });
 
   function getTotalItems(items: CartItemType[]) {
     return items.reduce((acc: number, item) => acc + item.amount, 0);
@@ -113,5 +126,3 @@ function App() {
     </div>
   );
 }
-
-export default App;
